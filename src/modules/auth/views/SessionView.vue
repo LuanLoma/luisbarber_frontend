@@ -5,20 +5,6 @@ import SessionForm from '@/modules/auth/components/SessionForm.vue'
 
 const sessionStore = useSessionStore()
 const tipoPlanGlobal = inject('tipoPlanGlobal')
-
-// FUNCIÓN CORREGIDA PARA PASAR LA VALIDACIÓN COMPLETA
-const ejecutarConsulta = async () => {
-  // 1. Ejecutamos la consulta en el Store (que ya maneja sus errores por dentro)
-  await sessionStore.consultarSesion()
-  
-  // 2. Evaluamos el estado real que quedó grabado en Pinia
-  if (sessionStore.autenticado) {
-    alert(`¡Sesión válida! Conectado como: ${sessionStore.nombreUsuario}`)
-  } else {
-    // Si la consulta terminó y autenticado es false, mostramos el mensaje que guardó el store o uno por defecto
-    alert(sessionStore.error || 'No hay ninguna sesión activa actualmente.')
-  }
-}
 </script>
 
 <template>
@@ -26,7 +12,7 @@ const ejecutarConsulta = async () => {
     <div>
       <p class="eyebrow">Manejo básico de sesión</p>
       <h2>Acceso administrativo</h2>
-      <p>Inicia sesión contra Flask para consultar el estado de sesión, guardar cookie y cerrar sesión.</p>
+      <p>Inicia sesión contra Flask para entrar al panel y gestionar tus servicios.</p>
       <SessionForm />
     </div>
 
@@ -37,7 +23,6 @@ const ejecutarConsulta = async () => {
       <p><strong>Rol:</strong> {{ tipoPlanGlobal }}</p>
       <p><strong>Autenticado:</strong> {{ sessionStore.autenticado ? 'Sí' : 'No' }}</p>
       
-      <button @click="ejecutarConsulta">Consultar sesión</button>
       <button class="secundario" @click="sessionStore.cerrarSesion">Cerrar sesión</button>
     </aside>
   </section>
