@@ -6,21 +6,17 @@ import SessionForm from '@/modules/auth/components/SessionForm.vue'
 const sessionStore = useSessionStore()
 const tipoPlanGlobal = inject('tipoPlanGlobal')
 
-// FUNCIÓN PARA DAR RETROALIMENTACIÓN VISUAL AL PICARLE AL BOTÓN
+// FUNCIÓN CORREGIDA PARA PASAR LA VALIDACIÓN COMPLETA
 const ejecutarConsulta = async () => {
-  try {
-    // Ejecuta la función de Pinia que va al backend a revisar la sesión
-    await sessionStore.consultarSesion()
-    
-    // Lanzamos la alerta para confirmar que el servidor respondió con éxito
-    if (sessionStore.autenticado) {
-      alert(`¡Sesión válida! Conectado como: ${sessionStore.nombreUsuario}`)
-    } else {
-      alert('El servidor respondió: No hay ninguna sesión activa actualmente.')
-    }
-  } catch (error) {
-    console.error('Error al consultar la sesión:', error)
-    alert('Error: No se pudo establecer conexión con el backend de Flask.')
+  // 1. Ejecutamos la consulta en el Store (que ya maneja sus errores por dentro)
+  await sessionStore.consultarSesion()
+  
+  // 2. Evaluamos el estado real que quedó grabado en Pinia
+  if (sessionStore.autenticado) {
+    alert(`¡Sesión válida! Conectado como: ${sessionStore.nombreUsuario}`)
+  } else {
+    // Si la consulta terminó y autenticado es false, mostramos el mensaje que guardó el store o uno por defecto
+    alert(sessionStore.error || 'No hay ninguna sesión activa actualmente.')
   }
 }
 </script>

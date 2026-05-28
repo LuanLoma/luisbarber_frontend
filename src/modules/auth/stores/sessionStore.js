@@ -24,15 +24,29 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   async function consultarSesion() {
-    const respuesta = await fetch(`${'https://luis-barber.onrender.com'}/sesion`, { credentials: 'include' })
-    aplicarSesion(await respuesta.json())
+    try {
+      const respuesta = await fetch(`${URL_BACKEND}/sesion`, { credentials: 'include' })
+      const datos = await respuesta.json()
+      
+      // CONFIGURACIÓN DE SEGURIDAD: Si Flask responde con un error (como el 401), limpiamos el estado
+      if (!respuesta.ok) {
+        aplicarSesion({ nombreUsuario: 'Invitado', correo: null, rol: 'cliente', autenticado: false })
+        throw new Error(datos.mensaje || 'Error al consultar la sesión')
+      }
+      
+      aplicarSesion(datos)
+    } catch (err) {
+      console.warn(' [Pinia Auth] Estado de sesión:', err.message)
+      // Guardamos el error en el ref por si tu vista lo ocupa mostrar de forma sutil
+      error.value = err.message 
+    }
   }
 
   async function iniciarSesion(credenciales) {
     mensaje.value = ''
     error.value = ''
     try {
-      const respuesta = await fetch(`${'https://luis-barber.onrender.com'}/login`, {
+      const respuesta = await fetch(`${URL_BACKEND}/login`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -50,7 +64,11 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   async function cerrarSesion() {
-    await fetch(`${'https://luis-barber.onrender.com'}/logout`, { method: 'POST', credentials: 'include' })
+    try {
+      await fetch(`${URL_BACKEND}/logout`, { method: 'POST', credentials: 'include' })
+    } catch (err) {
+      console.error('Error al cerrar sesión en servidor:', err)
+    }
     aplicarSesion({ nombreUsuario: 'Invitado', correo: null, rol: 'cliente', autenticado: false })
     mensaje.value = 'Sesión cerrada correctamente'
   }
