@@ -3,6 +3,9 @@ import { computed, onMounted } from 'vue'
 import { useSessionStore } from '@/modules/auth/stores/sessionStore'
 import { useRecordsStore } from '@/modules/public/stores/recordsStore'
 
+
+const API_URL = "https://luis-barber.onrender.com"
+
 const sessionStore = useSessionStore()
 const recordsStore = useRecordsStore()
 const citasPendientes = computed(() => recordsStore.citas.filter((cita) => cita.estado === 'pendiente').length)
@@ -12,7 +15,7 @@ const eliminarCita = async (idCita) => {
   if (!confirm('¿Realmente deseas eliminar esta cita de forma permanente?')) return
 
   try {
-    const respuesta = await fetch(`http://localhost:5000/citas/${idCita}`, {
+    const respuesta = await fetch(`${API_URL}/citas/${idCita}`, {
       method: 'DELETE'
     })
 

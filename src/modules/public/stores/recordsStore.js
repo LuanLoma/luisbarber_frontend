@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-const URL_BACKEND = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000'
+// Cambiamos el fallback local por la URL real de tu backend en Render
+const URL_BACKEND = import.meta.env.VITE_API_URL || 'https://luis-barber.onrender.com'
 
 async function leerRespuesta(respuesta) {
   const datos = await respuesta.json()
@@ -15,18 +16,13 @@ async function leerRespuesta(respuesta) {
 export const useRecordsStore = defineStore('servicios', () => {
 
   const categorias = ref(['Cabello', 'Barba', 'Paquete', 'Tratamiento'])
-  
-
   const servicios = ref([])
-  
-
   const citas = ref([])
   
   const mensaje = ref('')
   const error = ref('')
   const cargando = ref(false)
 
- 
   const serviciosActivos = computed(() => servicios.value.filter((item) => item.activo === 1 || item.activo === true))
   const totalElementos = computed(() => serviciosActivos.value.length)
   const totalDestacados = computed(() => serviciosActivos.value.filter((item) => item.destacado === 1 || item.destacado === true).length)
@@ -36,14 +32,11 @@ export const useRecordsStore = defineStore('servicios', () => {
     return (suma / serviciosActivos.value.length).toFixed(2)
   })
 
- 
-  
- 
   async function cargarRegistros() {
     cargando.value = true
     error.value = ''
     try {
-      servicios.value = await leerRespuesta(await fetch(`${URL_BACKEND}/servicios`, { credentials: 'include' }))
+      servicios.value = await leerRespuesta(await fetch(`${'https://luis-barber.onrender.com'}/servicios`, { credentials: 'include' }))
     } catch (err) {
       error.value = err.message
     } finally {
@@ -51,12 +44,11 @@ export const useRecordsStore = defineStore('servicios', () => {
     }
   }
 
- 
   async function agregarRegistro(nuevoServicio) {
     mensaje.value = ''
     error.value = ''
     try {
-      const resultado = await leerRespuesta(await fetch(`${URL_BACKEND}/servicios`, {
+      const resultado = await leerRespuesta(await fetch(`${'https://luis-barber.onrender.com'}/servicios`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -69,12 +61,11 @@ export const useRecordsStore = defineStore('servicios', () => {
     }
   }
 
-  
   async function desactivarRegistro(id) {
     mensaje.value = ''
     error.value = ''
     try {
-      const resultado = await leerRespuesta(await fetch(`${URL_BACKEND}/servicios/${id}/desactivar`, {
+      const resultado = await leerRespuesta(await fetch(`${'https://luis-barber.onrender.com'}/servicios/${id}/desactivar`, {
         method: 'PUT',
         credentials: 'include',
       }))
@@ -85,24 +76,20 @@ export const useRecordsStore = defineStore('servicios', () => {
     }
   }
 
-
-
- 
   async function cargarCitas() {
     error.value = ''
     try {
-      citas.value = await leerRespuesta(await fetch(`${URL_BACKEND}/citas`, { credentials: 'include' }))
+      citas.value = await leerRespuesta(await fetch(`${'https://luis-barber.onrender.com'}/citas`, { credentials: 'include' }))
     } catch (err) {
       error.value = err.message
     }
   }
 
-  
   async function crearCita(nuevaCita) {
     mensaje.value = ''
     error.value = ''
     try {
-      const resultado = await leerRespuesta(await fetch(`${URL_BACKEND}/citas`, {
+      const resultado = await leerRespuesta(await fetch(`${'https://luis-barber.onrender.com'}/citas`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -115,12 +102,11 @@ export const useRecordsStore = defineStore('servicios', () => {
     }
   }
 
-  
   async function eliminarCita(id) {
     mensaje.value = ''
     error.value = ''
     try {
-      const resultado = await leerRespuesta(await fetch(`${URL_BACKEND}/citas/${id}`, {
+      const resultado = await leerRespuesta(await fetch(`${'https://luis-barber.onrender.com'}/citas/${id}`, {
         method: 'DELETE',
         credentials: 'include',
       }))

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-const URL_BACKEND = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000'
+const URL_BACKEND = import.meta.env.VITE_API_URL || 'https://luis-barber.onrender.com'
+
 
 export const useSessionStore = defineStore('session', () => {
   const nombreUsuario = ref('Invitado')
@@ -23,7 +24,7 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   async function consultarSesion() {
-    const respuesta = await fetch(`${URL_BACKEND}/sesion`, { credentials: 'include' })
+    const respuesta = await fetch(`${'https://luis-barber.onrender.com'}/sesion`, { credentials: 'include' })
     aplicarSesion(await respuesta.json())
   }
 
@@ -31,7 +32,7 @@ export const useSessionStore = defineStore('session', () => {
     mensaje.value = ''
     error.value = ''
     try {
-      const respuesta = await fetch(`${URL_BACKEND}/login`, {
+      const respuesta = await fetch(`${'https://luis-barber.onrender.com'}/login`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -49,7 +50,7 @@ export const useSessionStore = defineStore('session', () => {
   }
 
   async function cerrarSesion() {
-    await fetch(`${URL_BACKEND}/logout`, { method: 'POST', credentials: 'include' })
+    await fetch(`${'https://luis-barber.onrender.com'}/logout`, { method: 'POST', credentials: 'include' })
     aplicarSesion({ nombreUsuario: 'Invitado', correo: null, rol: 'cliente', autenticado: false })
     mensaje.value = 'Sesión cerrada correctamente'
   }

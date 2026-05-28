@@ -1,7 +1,7 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 
-const URL_BACKEND = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000'
+const URL_BACKEND = import.meta.env.VITE_API_URL || 'https://luis-barber.onrender.com'
 const enviando = ref(false)
 const mensaje = ref('')
 const error = ref('')
@@ -14,7 +14,7 @@ async function enviarContacto() {
   mensaje.value = ''
   error.value = ''
   try {
-    const respuesta = await fetch(`${URL_BACKEND}/contacto`, {
+    const respuesta = await fetch(`${'https://luis-barber.onrender.com'}/contacto`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
