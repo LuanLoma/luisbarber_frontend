@@ -1,0 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, Arial, sans-serif;
+  color: #27221d;
+  background: #f5f1ea;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.6;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  letter-spacing: 0;
+}

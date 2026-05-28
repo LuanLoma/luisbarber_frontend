@@ -1,0 +1,23 @@
+[
+  {
+    "titulo": "Servicio de mantenimiento",
+    "categoria": "Servicios",
+    "tipo": "Preventivo",
+    "valor": 850,
+    "destacado": true
+  },
+  {
+    "titulo": "Producto desengrasante",
+    "categoria": "Productos",
+    "tipo": "Limpieza industrial",
+    "valor": 320,
+    "destacado": false
+  },
+  {
+    "titulo": "Cita de diagnóstico",
+    "categoria": "Citas",
+    "tipo": "Inspección",
+    "valor": 150,
+    "destacado": true
+  }
+]
